@@ -1708,11 +1708,36 @@ class App:
 def _set_app_icon(root: tk.Tk) -> None:
     assets = ROOT / "assets"
     try:
-        if os.name == "nt":
-            root.iconbitmap(default=str(assets / "app.ico"))
         root._icon_img = tk.PhotoImage(file=str(assets / "icon.png"))  # type: ignore[attr-defined]
         root.iconphoto(True, root._icon_img)  # type: ignore[attr-defined]
     except tk.TclError:
+        pass
+    if os.name == "nt":
+        try:
+            root.iconbitmap(default=str(assets / "app.ico"))
+        except tk.TclError:
+            pass
+        _set_window_icons(root, assets / "app.ico")
+
+
+def _set_window_icons(root: tk.Tk, ico: Path) -> None:
+    """Ikona w pasku tytułu i na pasku zadań ustawiona wprost (WM_SETICON) w rozmiarach pasujących do DPI –
+    sama iconphoto/iconbitmap potrafi zostawić pasek tytułu z ikoną domyślną."""
+    try:
+        import ctypes
+
+        u = ctypes.windll.user32
+        u.LoadImageW.restype = ctypes.c_void_p
+        u.SendMessageW.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_void_p, ctypes.c_void_p]
+        root.update_idletasks()
+        hwnd = u.GetParent(root.winfo_id()) or root.winfo_id()
+        for kind, metric in ((0, 49), (1, 11)):  # ICON_SMALL / SM_CXSMICON, ICON_BIG / SM_CXICON
+            size = u.GetSystemMetrics(metric)
+            handle = u.LoadImageW(None, str(ico), 1, size, size, 0x10)  # IMAGE_ICON, LR_LOADFROMFILE
+            if handle:
+                u.SendMessageW(hwnd, 0x0080, kind, handle)  # WM_SETICON
+                root._win_icons = getattr(root, "_win_icons", []) + [handle]  # type: ignore[attr-defined]
+    except Exception:  # noqa: BLE001
         pass
 
 
