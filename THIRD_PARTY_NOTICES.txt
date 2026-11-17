@@ -1,0 +1,70 @@
+AutoMapa Android Manager – składniki zewnętrzne / third-party components
+=========================================================================
+
+Własny kod aplikacji: GNU Affero General Public License v3.0 (plik LICENSE).
+
+Do paczki dołączone są poniższe programy i biblioteki. Każdy z nich ma własną
+licencję; pełne teksty znajdują się w folderze "licenses" oraz w plikach
+wskazanych poniżej. This package bundles the programs and libraries listed below.
+Each keeps its own license; the full texts are in the "licenses" folder and in the
+files named below.
+
+Aplikacja uruchamia 7-Zip i adb jako osobne programy (osobne procesy) i nie łączy
+się z nimi na poziomie kodu; niczego w nich nie zmieniono. The application runs
+7-Zip and adb as separate programs (separate processes); it is not linked to them
+at code level and nothing in them was modified.
+
+
+1. 7-Zip (7zr.exe)                                   [folder: tools]
+   Wersja / version: 26.04
+   Copyright (C) 1999-2025 Igor Pavlov.   https://www.7-zip.org/
+   Licencja (wg license.txt ze strony 7-zip.org): GNU LGPL (wersja 2.1 lub nowsza)
+   dla większości kodu i wszystkich "pozostałych plików"; niektóre fragmenty
+   7z.dll na licencji BSD (2- i 3-clause); ograniczenie "unRAR" dotyczy kodu
+   dekodera RAR w 7z.dll – aplikacja używa wyłącznie formatu 7z i 7zr.exe.
+   Pełny tekst warunków: licenses/7zip-license.txt
+   Kod źródłowy i licencje: https://www.7-zip.org/   Tekst LGPL:
+   https://www.gnu.org/licenses/lgpl-2.1.html
+   License per license.txt on 7-zip.org: GNU LGPL (2.1 or later) for most code and
+   all other files; some 7z.dll code under BSD 2/3-clause; the "unRAR restriction"
+   concerns the RAR decoder in 7z.dll (not used here). Binary redistributions must
+   reproduce the license information (included).
+
+2. Android Debug Bridge (adb) – Android SDK Platform-Tools     [folder: tools/adb-win]
+   Pliki / files: adb.exe, AdbWinApi.dll, AdbWinUsbApi.dll, NOTICE.txt
+   Wersja / version: 37.0.1-15733141
+   Copyright (C) Google LLC / The Android Open Source Project.
+   Źródło / source: https://developer.android.com/tools/releases/platform-tools
+   Plik NOTICE.txt dołączony przez Google do Platform-Tools (tools/adb-win/NOTICE.txt)
+   wskazuje licencję Apache License 2.0 oraz licencje bibliotek zewnętrznych
+   użytych w tym pakiecie; dołączono go bez zmian. The NOTICE.txt shipped by
+   Google with Platform-Tools (tools/adb-win/NOTICE.txt) lists the Apache License 2.0
+   and the licenses of third-party libraries used in that package; it is included
+   unchanged.
+   Android SDK License Agreement: https://developer.android.com/studio/terms (jej
+   pkt 3.5: komponenty open source podlegają wyłącznie własnym licencjom /
+   components under open source licenses are governed solely by those licenses).
+
+3. Python 3.14.7                                    [runtime wbudowany w plik .exe / embedded runtime]
+   Python Software Foundation License.   https://www.python.org/
+   Pełny tekst / full text: licenses/python-LICENSE.txt
+
+4. Tcl/Tk 9.0.4 (interfejs graficzny / GUI toolkit)
+   Licencja typu BSD / BSD-style license.   https://www.tcl-lang.org/
+   Pełny tekst / full text: licenses/tcltk-license.terms
+
+5. PyInstaller 6.22.3 (pakowanie programu / bundling; bootloader w pliku .exe)
+   GNU GPL v2 z wyjątkiem dla bootloadera ("Bootloader Exception"); bootloader i
+   powiązane pliki na licencji Apache 2.0.   https://pyinstaller.org/ GPL v2 with
+   the Bootloader Exception; bootloader and related files under Apache 2.0.
+   Pełny tekst / full text: licenses/pyinstaller-COPYING.txt
+
+6. Logotypy / logos: buycoffee.to, Revolut
+   Są znakami towarowymi ich właścicieli i służą wyłącznie jako odnośniki do stron
+   wsparcia autora. They are trademarks of their respective owners and are used
+   only as links to the author's support pages.
+
+7. Czcionki i ikony interfejsu / UI fonts and icons: Segoe UI, Segoe Fluent Icons (Microsoft)
+   Używane z systemu użytkownika, nie są dołączone do paczki. / Used from the
+   user's system; not bundled.
+
