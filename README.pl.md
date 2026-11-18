@@ -6,17 +6,18 @@ Interfejs jest wzorowany na Ustawieniach Windows 11 (jasny i ciemny motyw, zaokr
 pasek boczny z zakładkami).
 
 Autor: Piotr Deres ([likoton.pl](https://likoton.pl)). Licencja: GNU AGPL v3 (plik `LICENSE`).
-English version: [README.md](README.md).
+Kod źródłowy: https://github.com/likot180/AutoMapa-Android-Manager. English version: [README.md](README.md).
 
 ## Uruchamianie
 
-- **Gotowa paczka (Windows):** rozpakuj `AutoMapaAndroidManager-<wersja>-windows.zip` i uruchom
+- **Instalator Windows:** dla Windows dostępny jest program instalacyjny.
+- **Gotowa paczka (Windows, bez instalacji):** rozpakuj `AutoMapaAndroidManager-<wersja>-windows.zip` i uruchom
   `AutoMapa Android Manager.exe`. Paczka zawiera Pythona, adb i obsługę 7z – nic nie trzeba doinstalowywać.
   Niepodpisany plik .exe może wywołać ostrzeżenie SmartScreen („Więcej informacji” → „Uruchom mimo to”).
 - **Ze źródeł:** Python 3.10+ (Tkinter jest w standardowej instalacji; brak innych zależności).
   - Windows: `run.bat` albo `python main.py`
-  - Linux / macOS: `./run.sh`. Aplikacja używa `adb` z `PATH` albo `tools/adb-linux` / `tools/adb-darwin` obok `main.py`
-    (rozpakuje też `platform-tools-latest-linux.zip` / `-darwin.zip` umieszczone obok `main.py`).
+  - Linux / macOS: `./run.sh`. Aplikacja używa dołączonego `tools/adb-linux` / `tools/adb-darwin`
+    (Android SDK Platform-Tools), a gdy ich brakuje – `adb` z `PATH`.
 
 Na telefonie włącz debugowanie USB (Opcje programisty) i zaakceptuj komunikat „Zezwolić na debugowanie USB?”
 (zaznacz „Zawsze zezwalaj”, żeby nie pytało ponownie).
@@ -63,6 +64,8 @@ backup_info.json
 ```
 main.py, automapa_manager/   kod aplikacji
 tools/adb-win/               adb.exe, AdbWinApi.dll, AdbWinUsbApi.dll, NOTICE.txt (Android SDK Platform-Tools)
+tools/adb-linux/             adb, lib64/, NOTICE.txt (Android SDK Platform-Tools dla Linuksa)
+tools/adb-darwin/            adb, lib64/, NOTICE.txt (Android SDK Platform-Tools dla macOS)
 tools/7zr.exe                7-Zip (GNU LGPL) dla formatu 7z
 assets/                      ikony i logotypy
 LICENSE, THIRD_PARTY_NOTICES.txt, licenses/   informacje licencyjne
@@ -74,4 +77,4 @@ Format 7z na Linuksie/macOS: zainstaluj `p7zip`/`7zz` lub `pip install py7zr`; b
 ## Licencja
 
 GNU Affero General Public License v3.0 – pełny tekst w pliku `LICENSE` oraz w oknie „O programie”.
-Wykorzystuje Android Debug Bridge (Google; licencje w `tools/adb-win/NOTICE.txt`) i 7-Zip (GNU LGPL). Licencje wszystkich dołączonych składników: `THIRD_PARTY_NOTICES.txt` i folder `licenses/`.
+Wykorzystuje Android Debug Bridge (Google; licencje w `tools/adb-*/NOTICE.txt`) i 7-Zip (GNU LGPL). Licencje wszystkich dołączonych składników: `THIRD_PARTY_NOTICES.txt` i folder `licenses/`.

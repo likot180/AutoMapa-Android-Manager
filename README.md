@@ -5,15 +5,16 @@ backups and restores, installing the APK and uploading maps. The interface follo
 Windows 11 Settings (light/dark theme, rounded sections, sidebar navigation).
 
 Author: Piotr Deres ([likoton.pl](https://likoton.pl)). License: GNU AGPL v3 (`LICENSE`).
-Polish version: [README.pl.md](README.pl.md).
+Source code: https://github.com/likot180/AutoMapa-Android-Manager. Polish version: [README.pl.md](README.pl.md).
 
 ## Running
 
-- **Packaged build (Windows):** unzip `AutoMapaAndroidManager-<version>-windows.zip` and run `AutoMapa Android Manager.exe`. Python, adb and 7z support are included; nothing needs to be installed.
+- **Windows installer:** an installer (setup program) is available for Windows.
+- **Packaged build (Windows, no installation):** unzip `AutoMapaAndroidManager-<version>-windows.zip` and run `AutoMapa Android Manager.exe`. Python, adb and 7z support are included; nothing needs to be installed.
   The unsigned `.exe` may trigger SmartScreen ("More info" → "Run anyway").
 - **From source:** Python 3.10+ (Tkinter ships with the standard installation; no other dependencies).
   - Windows: `run.bat` or `python main.py`
-  - Linux / macOS: `./run.sh`. The app uses `adb` from `PATH`, or `tools/adb-linux` / `tools/adb-darwin` next to `main.py` (it also unpacks `platform-tools-latest-linux.zip` / `-darwin.zip` placed next to `main.py`).
+  - Linux / macOS: `./run.sh`. The app uses the bundled `tools/adb-linux` / `tools/adb-darwin` (Android SDK Platform-Tools) and falls back to `adb` from `PATH` if they are missing.
 
 On the phone, enable USB debugging (Developer options) and accept the "Allow USB debugging" prompt (tick "Always allow" so it is not asked again).
 
@@ -73,6 +74,8 @@ backup_info.json
 ```
 main.py, automapa_manager/   application code
 tools/adb-win/               adb.exe, AdbWinApi.dll, AdbWinUsbApi.dll, NOTICE.txt (Android SDK Platform-Tools)
+tools/adb-linux/             adb, lib64/, NOTICE.txt (Android SDK Platform-Tools for Linux)
+tools/adb-darwin/            adb, lib64/, NOTICE.txt (Android SDK Platform-Tools for macOS)
 tools/7zr.exe                7-Zip (GNU LGPL) for the 7z format
 assets/                      icons and logos
 LICENSE, THIRD_PARTY_NOTICES.txt, licenses/   license information
@@ -84,4 +87,4 @@ For the 7z format on Linux/macOS install `p7zip`/`7zz` or `pip install py7zr`; w
 ## License
 
 GNU Affero General Public License v3.0 – full text in `LICENSE` and in the About window.
-Uses Android Debug Bridge (Google; licenses in `tools/adb-win/NOTICE.txt`) and 7-Zip (GNU LGPL). Licenses of all bundled components: `THIRD_PARTY_NOTICES.txt` and the `licenses/` folder.
+Uses Android Debug Bridge (Google; licenses in `tools/adb-*/NOTICE.txt`) and 7-Zip (GNU LGPL). Licenses of all bundled components: `THIRD_PARTY_NOTICES.txt` and the `licenses/` folder.

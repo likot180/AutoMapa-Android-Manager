@@ -31,8 +31,9 @@ at code level and nothing in them was modified.
    reproduce the license information (included).
 
 2. Android Debug Bridge (adb) – Android SDK Platform-Tools     [folder: tools/adb-win]
-   Pliki / files: adb.exe, AdbWinApi.dll, AdbWinUsbApi.dll, NOTICE.txt
-   Wersja / version: 37.0.1-15733141
+   Pliki / files: adb.exe, AdbWinApi.dll, AdbWinUsbApi.dll, NOTICE.txt (Windows);
+   adb-linux, adb-darwin: adb, lib64/, NOTICE.txt (Linux, macOS – ze źródeł / from source)
+   Wersja / version (Windows): 37.0.1-15733141
    Copyright (C) Google LLC / The Android Open Source Project.
    Źródło / source: https://developer.android.com/tools/releases/platform-tools
    Plik NOTICE.txt dołączony przez Google do Platform-Tools (tools/adb-win/NOTICE.txt)

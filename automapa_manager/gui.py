@@ -1,6 +1,7 @@
 """Interfejs graficzny (Tkinter) w stylu Ustawień Windows 11."""
 from __future__ import annotations
 
+import contextlib
 import os
 import queue
 import sys
@@ -27,6 +28,7 @@ URL_OFFICIAL = "https://automapa.pl"
 URL_OLDER = "https://apkpure.com/pl/automapa-offline-navigation/pl.aqurat.automapa/versions"
 URL_MAPS = "https://www.automapa.pl/nawigacja/pobierz"
 URL_AUTHOR = "https://likoton.pl"
+URL_GITHUB = "https://github.com/likot180/AutoMapa-Android-Manager"
 URL_BUYCOFFEE = "https://buycoffee.to/likoton"
 URL_REVOLUT = "https://revolut.me/piotr7c5k"
 
@@ -909,6 +911,7 @@ class App:
             (t("about_7zip"), lambda par: ttk.Label(par, text=archive.sevenzip_version() or "–", style="Card.TLabel")),
             (t("about_author"), lambda par: self._author_cell(par)),
             (t("about_license"), lambda par: self._license_cell(par)),
+            (t("about_source"), lambda par: FLink(par, p, "github.com/likot180/AutoMapa-Android-Manager", URL_GITHUB, bg=p.card)),
         ]
         for i, (label, make) in enumerate(rows):
             r = 2 + i
@@ -989,7 +992,7 @@ class App:
                           console: Optional[str] = None) -> None:
         if self.busy:
             self.info(self.t("err_busy_settings"))
-            self.root.after(30, self._build_and_render)  # przywraca poprzednie wartości w polach
+            self.root.after(30, lambda: self._rebuild_frozen())  # przywraca poprzednie wartości w polach
             return
         if lang is not None:
             self.cfg.language = lang
@@ -1001,11 +1004,43 @@ class App:
         self.cfg.save()
 
         def rebuild():
-            self.pal = theme.apply(self.root, self.cfg.theme)
-            theme.set_titlebar(self.root, self.pal.name == "dark")
-            self._build_and_render()
+            with self._frozen():
+                self.pal = theme.apply(self.root, self.cfg.theme)
+                theme.set_titlebar(self.root, self.pal.name == "dark")
+                self._build_and_render()
 
         self.root.after(30, rebuild)
+
+    @contextlib.contextmanager
+    def _frozen(self):
+        """Wstrzymuje rysowanie okna na czas przebudowy interfejsu. Bez tego Windows maluje pośrednie stany
+        (stare kontrolki z nowymi kolorami, czarne prostokąty po zniszczonych oknach potomnych)."""
+        hwnd = None
+        if os.name == "nt":
+            try:
+                import ctypes
+
+                user32 = ctypes.windll.user32
+                hwnd = user32.GetParent(self.root.winfo_id()) or self.root.winfo_id()
+                if not user32.LockWindowUpdate(hwnd):
+                    hwnd = None
+            except Exception:  # noqa: BLE001
+                hwnd = None
+        try:
+            yield
+            if hwnd:
+                self.root.update()  # układ i zdarzenia Configure dokończone, gdy rysowanie jest jeszcze wstrzymane
+        finally:
+            if hwnd:
+                import ctypes
+
+                ctypes.windll.user32.LockWindowUpdate(0)
+                # INVALIDATE | ERASE | ALLCHILDREN | UPDATENOW: pełne, jednorazowe odświeżenie okna i kontrolek
+                ctypes.windll.user32.RedrawWindow(hwnd, None, None, 0x0001 | 0x0004 | 0x0080 | 0x0100)
+
+    def _rebuild_frozen(self) -> None:
+        with self._frozen():
+            self._build_and_render()
 
     def _build_and_render(self) -> None:
         self._build()

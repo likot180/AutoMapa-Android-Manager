@@ -73,10 +73,20 @@ def _extract_platform_tools(zip_path: Path, dest: Path) -> None:
                 target.chmod(0o755)
 
 
+def _ensure_executable(path: Path) -> None:
+    """Pliki skopiowane z Windowsa lub rozpakowane bez atrybutów mogą nie mieć bitu wykonywania (Linux/macOS)."""
+    if os.name != "nt" and not os.access(path, os.X_OK):
+        try:
+            path.chmod(0o755)
+        except OSError:
+            pass
+
+
 def locate_adb() -> Optional[Path]:
     folder, exe, archive = _platform_info()
     cand = ROOT / folder / exe
     if cand.exists():
+        _ensure_executable(cand)
         return cand
     zip_path = next((d / archive for d in (ROOT, ROOT / "tools") if archive and (d / archive).exists()), None)
     if zip_path:
@@ -85,6 +95,7 @@ def locate_adb() -> Optional[Path]:
         except Exception:
             pass
         if cand.exists():
+            _ensure_executable(cand)
             return cand
     found = shutil.which("adb")
     return Path(found) if found else None
